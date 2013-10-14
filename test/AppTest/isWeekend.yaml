@@ -1,0 +1,10 @@
+isWeekend:
+  includeAny:
+    - dayOfWeekName:
+      - '^sat(urday)?'
+      - '^sun(day)?'
+    - dayOfWeek: '6'
+    - isSunday
+isSunday:
+  includeAny:
+    - dayOfWeek: 7
