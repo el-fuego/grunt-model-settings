@@ -8,7 +8,12 @@
 module.exports = function (grunt) {
     'use strict';
 
-    var options;
+    var options,
+        reservedWords = [
+            'true',
+            'false',
+            'null'
+        ];
 
     /**
      * Read and parse file structure
@@ -63,15 +68,22 @@ module.exports = function (grunt) {
     function getRules(data) {
         var i = 0, attributeName, l, rules = [];
 
-        grunt.log.writeln(JSON.stringify(data));
-
         if (data === undefined) {
             return [];
         }
+        // make function return true|false|null
+        if (data === null || typeof(data) === 'boolean') {
+            return [data + ''];
+        }
         if (typeof data === 'string') {
+
+            // make function return true|false|null
+            // if data is string
+            if (reservedWords.indexOf(data) >= 0) {
+                return [data];
+            }
             return [addMethodCalls(data)];
         }
-
         for (l = data.length; i < l; i++) {
             // "methodName"
             if (typeof data[i] === 'string') {
@@ -102,8 +114,8 @@ module.exports = function (grunt) {
             includeRules,
             excludeRules;
 
-        // data = '(firstMethod && secondMethod) || thirdMethod'
-        if (typeof data === 'string') {
+        // data = '(firstMethod && secondMethod) || thirdMethod' || true
+        if (typeof data === 'string' || data == null || typeof data === 'boolean') {
             rules.push(getRules(data));
 
         // data = { include: [..], exclude: [..] }
@@ -150,7 +162,7 @@ module.exports = function (grunt) {
             prefix: 'Model.prototype',
             singleDefinition: true,
             rulePrefix: 'function () {\n return ',
-            rulePostfix: '\n}',
+            rulePostfix: ';\n}',
             functionsScope: 'this',
             attributesScope: 'this.attributes'
         });
