@@ -1,7 +1,7 @@
 {
     "name":             "grunt-model-settings",
     "description":      "Grunt plugin for loading and merge settings from grunt config file",
-    "version":          "0.0.1",
+    "version":          "0.0.2",
     "homepage":         "https://github.com/el-fuego/grunt-model-settings.git",
     "author":           {
         "name":  "Yuriy Pulyaev",
